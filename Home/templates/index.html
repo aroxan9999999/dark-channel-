@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON FUTURE | Cyberpunk Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Cyberpunk Base Styles */
+        :root {
+            --neon-green: #00ff41;
+            --dark-matrix: #0d0208;
+            --matrix-text: #008f11;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-purple: #9d00ff;
+            --glow-intensity: 1;
+        }
+
+        @font-face {
+            font-family: 'Matrix';
+            src: url('https://fonts.cdnfonts.com/css/matrix-code-nfi');
+        }
+
+        @font-face {
+            font-family: 'Cyber';
+            src: url('https://fonts.cdnfonts.com/css/cyberpunk-is-not-dead');
+        }
+
+        /* Glowing Text Effect */
+        .glow {
+            text-shadow:
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green),
+                0 0 40px var(--neon-green),
+                0 0 80px var(--neon-green);
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow:
+                    0 0 5px var(--neon-green),
+                    0 0 10px var(--neon-green),
+                    0 0 20px var(--neon-green),
+                    0 0 40px var(--neon-green),
+                    0 0 80px var(--neon-green);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        /* Cyberpunk Background */
+        body {
+            background-color: var(--dark-matrix);
+            color: var(--neon-green);
+            font-family: 'Matrix', monospace;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Cyberpunk Navbar */
+        .cyber-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(13, 2, 8, 0.8);
+            border-bottom: 1px solid var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+            position: relative;
+            z-index: 100;
+        }
+
+        .cyber-logo {
+            font-family: 'Cyber', sans-serif;
+            font-size: 2rem;
+            color: var(--neon-green);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .cyber-logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .cyber-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .cyber-menu li {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .cyber-menu a {
+            color: var(--neon-green);
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 10px 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-menu a:before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--neon-green);
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .cyber-menu a:hover:before {
+            visibility: visible;
+            width: 100%;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Cyberpunk Buttons */
+        .cyber-btn {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            overflow: hidden;
+            transition: 0.2s;
+            border: 1px solid var(--neon-green);
+            margin: 0 10px;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Cyber', sans-serif;
+        }
+
+        .cyber-btn:hover {
+            color: var(--dark-matrix);
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green), 0 0 40px var(--neon-green), 0 0 80px var(--neon-green);
+            transition-delay: 0.1s;
+        }
+
+        .cyber-btn span {
+            position: absolute;
+            display: block;
+        }
+
+        .cyber-btn span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-green));
+        }
+
+        .cyber-btn:hover span:nth-child(1) {
+            left: 100%;
+            transition: 1s;
+        }
+
+        .cyber-btn span:nth-child(3) {
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(270deg, transparent, var(--neon-green));
+        }
+
+        .cyber-btn:hover span:nth-child(3) {
+            right: 100%;
+            transition: 1s;
+            transition-delay: 0.5s;
+        }
+
+        .cyber-btn span:nth-child(2) {
+            top: -100%;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--neon-green));
+        }
+
+        .cyber-btn:hover span:nth-child(2) {
+            top: 100%;
+            transition: 1s;
+            transition-delay: 0.25s;
+        }
+
+        .cyber-btn span:nth-child(4) {
+            bottom: -100%;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(360deg, transparent, var(--neon-green));
+        }
+
+        .cyber-btn:hover span:nth-child(4) {
+            bottom: 100%;
+            transition: 1s;
+            transition-delay: 0.75s;
+        }
+
+        /* Cyberpunk Hero Section */
+        .cyber-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 5%;
+            position: relative;
+            min-height: 80vh;
+        }
+
+        .cyber-content {
+            flex: 1;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .cyber-title {
+            font-family: 'Cyber', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .cyber-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: var(--matrix-text);
+        }
+
+        .cyber-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .cyber-image img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 20px var(--neon-green));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Cyberpunk Search Box */
+        .cyber-search {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .cyber-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Matrix', monospace;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .cyber-input::placeholder {
+            color: var(--matrix-text);
+        }
+
+        .cyber-input:focus {
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .cyber-search-btn {
+            padding: 15px 25px;
+            background: var(--neon-green);
+            color: var(--dark-matrix);
+            border: none;
+            font-family: 'Cyber', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-search-btn:hover {
+            background: var(--dark-matrix);
+            color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Cyberpunk Stats */
+        .cyber-stats {
+            display: flex;
+            margin-top: 50px;
+        }
+
+        .cyber-stat {
+            margin-right: 40px;
+            text-align: center;
+        }
+
+        .cyber-stat-number {
+            font-family: 'Cyber', sans-serif;
+            font-size: 3rem;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .cyber-stat-text {
+            font-size: 1rem;
+            color: var(--matrix-text);
+        }
+
+        /* Cyberpunk Grid Layout */
+        .cyber-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 5%;
+        }
+
+        .cyber-card {
+            background: rgba(13, 2, 8, 0.7);
+            border: 1px solid var(--neon-green);
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .cyber-card:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            background-size: 400%;
+            z-index: -1;
+            opacity: 0;
+            transition: 0.5s;
+            animation: animate 20s linear infinite;
+        }
+
+        .cyber-card:hover:before {
+            opacity: 1;
+            filter: blur(5px);
+        }
+
+        @keyframes animate {
+            0% { background-position: 0 0; }
+            50% { background-position: 300% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        .cyber-card-title {
+            font-family: 'Cyber', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-green);
+        }
+
+        .cyber-card-text {
+            color: var(--matrix-text);
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .cyber-hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 50px;
+            }
+
+            .cyber-content {
+                margin-bottom: 50px;
+            }
+
+            .cyber-title {
+                font-size: 3rem;
+            }
+
+            .cyber-menu {
+                display: none;
+            }
+
+            .cyber-mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cyber-title {
+                font-size: 2.5rem;
+            }
+
+            .cyber-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cyber-stat {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+
+        /* Cyberpunk Footer */
+        .cyber-footer {
+            text-align: center;
+            padding: 30px 5%;
+            border-top: 1px solid var(--neon-green);
+            margin-top: 50px;
+            position: relative;
+        }
+
+        .cyber-footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .cyber-social {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .cyber-social a {
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-social a:hover {
+            transform: translateY(-5px);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .cyber-copyright {
+            color: var(--matrix-text);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix" class="matrix-rain"></canvas>
+
+    <!-- Cyberpunk Navbar -->
+    <nav class="cyber-nav">
+        <a href="#" class="cyber-logo">
+            <img src="https://i.imgur.com/JqYeZvn.png" alt="NEON FUTURE">
+            <span class="glow">NEON FUTURE</span>
+        </a>
+
+        <ul class="cyber-menu">
+            <li><a href="#" class="glow">HOME</a></li>
+            <li><a href="#" class="glow">JOBS</a></li>
+            <li><a href="#" class="glow">EXPLORE</a></li>
+            <li><a href="#" class="glow">ABOUT</a></li>
+            <li><a href="#" class="glow">CONTACT</a></li>
+        </ul>
+
+        <div>
+            <button class="cyber-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                LOGIN
+            </button>
+            <button class="cyber-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                SIGNUP
+            </button>
+        </div>
+    </nav>
+
+    <!-- Cyberpunk Hero Section -->
+    <section class="cyber-hero">
+        <div class="cyber-content">
+            <h1 class="cyber-title glow">YOUR FUTURE <br>STARTS HERE</h1>
+            <p class="cyber-text">Join the digital revolution with our cutting-edge platform. We bridge the gap between talent and opportunity in the neon-lit streets of the cyber future.</p>
+
+            <div class="cyber-search">
+                <input type="text" class="cyber-input" placeholder="Search for opportunities...">
+                <button class="cyber-search-btn glow">SEARCH</button>
+            </div>
+
+            <div class="cyber-stats">
+                <div class="cyber-stat">
+                    <div class="cyber-stat-number glow">10K+</div>
+                    <div class="cyber-stat-text">JOBS AVAILABLE</div>
+                </div>
+                <div class="cyber-stat">
+                    <div class="cyber-stat-number glow">5K+</div>
+                    <div class="cyber-stat-text">HAPPY CLIENTS</div>
+                </div>
+                <div class="cyber-stat">
+                    <div class="cyber-stat-number glow">100+</div>
+                    <div class="cyber-stat-text">CORPORATIONS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-image">
+            <img src="https://i.imgur.com/7W7Qz9G.png" alt="Cyberpunk Character">
+        </div>
+    </section>
+
+    <!-- Cyberpunk Features Grid -->
+    <div class="cyber-grid">
+        <div class="cyber-card">
+            <h3 class="cyber-card-title glow">NEON NETWORK</h3>
+            <p class="cyber-card-text">Connect with the brightest minds in the neon-lit digital landscape. Our network spans across all major megacities.</p>
+        </div>
+        <div class="cyber-card">
+            <h3 class="cyber-card-title glow">CYBER JOBS</h3>
+            <p class="cyber-card-text">From neural programming to drone maintenance, find the most cutting-edge jobs in the cyber world.</p>
+        </div>
+        <div class="cyber-card">
+            <h3 class="cyber-card-title glow">DIGITAL UPGRADES</h3>
+            <p class="cyber-card-text">Enhance your skills with our cybernetic training programs and augment your career potential.</p>
+        </div>
+    </div>
+
+    <!-- Cyberpunk Footer -->
+    <footer class="cyber-footer">
+        <div class="cyber-social">
+            <a href="#" class="glow"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="glow"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="glow"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="glow"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="glow"><i class="fab fa-github"></i></a>
+        </div>
+        <p class="cyber-copyright">© 2023 NEON FUTURE | ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+
+        const alphabet = katakana + latin + nums + symbols;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        // Glow intensity control
+        document.addEventListener('mousemove', (e) => {
+            const intensity = (e.clientX / window.innerWidth) * 2;
+            document.documentElement.style.setProperty('--glow-intensity', intensity);
+        });
+
+        // Responsive adjustments
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Cyberpunk theme toggle
+        const themeButtons = document.querySelectorAll('.cyber-btn');
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.add('active');
+                setTimeout(() => {
+                    button.classList.remove('active');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

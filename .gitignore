@@ -1,0 +1,8 @@
+.idea
+.venv
+config/.env
+__pycache__
+/database/database.db
+exports/
+batman_logs/
+.envs/.local/.aiogram
